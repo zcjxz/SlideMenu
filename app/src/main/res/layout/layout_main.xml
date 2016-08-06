@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
         <ImageView
+            android:clickable="true"
+            android:id="@+id/iv_back"
             android:layout_width="80dp"
             android:layout_height="60dp"
             android:src="@drawable/main_back"/>

@@ -115,19 +115,32 @@ public class SlideMenu extends FrameLayout {
                 if (getScrollX()>-menuViewWidth/2){
                     //关闭菜单
 //                    scrollTo(0,0);//没有滚动过程，不采用
-                    scroller.startScroll(getScrollX(),0,0-getScrollX(),0,400);
-                    invalidate();
+                    closeMenu();
                 }else{
                     //弹出菜单
 //                    scrollTo(-menuViewWidth,0);//没有滚动过程，不采用
-                    scroller.startScroll(getScrollX(),0,-menuViewWidth-getScrollX(),0,400);
-                    invalidate();
+                    openMenu();
                 }
                 break;
         }
         return true;
     }
 
+    /**
+     * 关闭菜单
+     */
+    private void closeMenu(){
+        scroller.startScroll(getScrollX(),0,0-getScrollX(),0,400);
+        invalidate();
+    }
+
+    /**
+     * 弹出菜单
+     */
+    private void openMenu(){
+        scroller.startScroll(getScrollX(),0,-menuViewWidth-getScrollX(),0,400);
+        invalidate();
+    }
     /**
      * Scroller不会主动调用这个方法完成滚动
      * 而invalidate()会调用这个方法
@@ -140,6 +153,42 @@ public class SlideMenu extends FrameLayout {
                                                 //false表示动画已经完成
             scrollTo(scroller.getCurrX(),0);
             invalidate();//递归调用，不断绘制滚动动画
+        }
+    }
+
+    /**
+     * 判断是否拦截touchEvent事件
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                downX= (int) ev.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int deltaX = (int) (ev.getX() - downX);
+                if (Math.abs(deltaX) >10){
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    /**
+     * 切换菜单
+     */
+    public void switchMenu(){
+        if (getScrollX()==0){
+            //弹出菜单
+            openMenu();
+        }else{
+            //关闭菜单
+            closeMenu();
         }
     }
 }

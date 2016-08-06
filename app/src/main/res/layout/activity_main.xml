@@ -6,6 +6,7 @@
     tools:context="com.zcj.SlideMenu.MainActivity">
 
     <com.zcj.SlideMenu.view.SlideMenu
+        android:id="@+id/slideMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
